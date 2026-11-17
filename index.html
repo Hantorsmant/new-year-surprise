@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>До Нового Года...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .snow {
+            position: absolute;
+            top: -10px;
+            color: #fff;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            max-width: 90%;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)); }
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            margin-bottom: 40px;
+            opacity: 0.85;
+            font-style: italic;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: clamp(10px, 3vw, 25px);
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: clamp(15px, 3vw, 25px) clamp(20px, 4vw, 35px);
+            min-width: 90px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .time-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .time-value {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .time-label {
+            font-size: clamp(0.7rem, 1.8vw, 0.95rem);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .password-form {
+            display: none;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .password-form.active {
+            display: block;
+        }
+
+        .password-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .submit-btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ffd700, #ff6b6b);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 15px;
+            font-size: 1rem;
+            display: none;
+        }
+
+        .final-message {
+            display: none;
+            animation: fadeIn 2s ease-in;
+        }
+
+        .final-message.active {
+            display: block;
+        }
+
+        .final-message h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, #ffd700, #ff69b4, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbow 3s ease-in-out infinite;
+        }
+
+        @keyframes rainbow {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+        }
+
+        .message-text {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            white-space: pre-wrap;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.5em;
+            background: #ffd700;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .hide { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="container">
+        <div id="timer-block">
+            <h1>До Нового Года осталось...</h1>
+            <p class="subtitle">Совсем немного, и я смогу поздравить тебя лично ❤️</p>
+            <div class="timer">
+                <div class="time-box">
+                    <div class="time-value" id="days">00</div>
+                    <div class="time-label">Дней</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="hours">00</div>
+                    <div class="time-label">Часов</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="minutes">00</div>
+                    <div class="time-label">Минут</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-value" id="seconds">00</div>
+                    <div class="time-label">Секунд</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="password-block" class="password-form">
+            <h1>🔐 Введи волшебный пароль</h1>
+            <p class="subtitle">Я подготовил для тебя что-то особенное...</p>
+            <input 
+                type="password" 
+                id="password-input" 
+                class="password-input" 
+                placeholder="Введи пароль..."
+                autocomplete="off"
+            >
+            <br>
+            <button class="submit-btn" onclick="checkPassword()">Открыть ✨</button>
+            <p class="error-message" id="error-msg">Неверный пароль. Попробуй ещё раз 💔</p>
+        </div>
+
+        <div id="final-block" class="final-message">
+            <h2>🎉 С Новым Годом! 🎉</h2>
+            <div class="message-text" id="message-text"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // НАСТРОЙКИ
+        // ============================================
+        
+        const PASSWORD = "КИСА01.01";
+        
+        const MESSAGE = `Привет! 🎄
+
+Пока все считают дни до боя курантов и нарезки оливье, я просто хочу сказать тебе кое-что важное.
+
+Этот Новый Год мы встретим на расстоянии (спасибо армии за этот квест), но знаешь что? Даже армейский устав не сможет заставить меня забыть, какая ты особенная. Ты — тот человек, о котором я думаю перед сном и с которого начинаю утро. Да-да, даже в армии 😄
+
+Ты — мой главный спонсор хорошего настроения, мой личный антистресс и человек, который делает даже самые обычные дни ярче. С тобой можно и посмеяться до слёз, и помолчать, и просто быть собой. А это, поверь, большая редкость.
+
+Знаешь, я тут понял одну вещь: расстояние — это просто цифры на карте. Ты всё равно умудряешься быть рядом, когда мне это нужно. И это круто.
+
+Желаю тебе в новом году поменьше стресса, побольше счастья (и денег, чтобы было на что меня угощать, когда вернусь 😏), и чтобы все твои мечты сбывались. Пусть этот год будет таким же тёплым и светлым, как ты сама.
+
+С Новым Годом! 🥂✨
+
+Обнял (пока виртуально, но очень крепко)!
+Денис ❤️`;
+
+        const TARGET_DATE = new Date('2027-01-01T00:00:00').getTime();
+
+        // ============================================
+        // ШИФРОВАНИЕ
+        // ============================================
+        
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function encryptMessage(message, password) {
+            const encoder = new TextEncoder();
+            const keyMaterial = await crypto.subtle.importKey(
+                'raw',
+                encoder.encode(password),
+                'PBKDF2',
+                false,
+                ['deriveBits', 'deriveKey']
+            );
+            
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const key = await crypto.subtle.deriveKey(
+                { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['encrypt']
+            );
+            
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const encrypted = await crypto.subtle.encrypt(
+                { name: 'AES-GCM', iv },
+                key,
+                encoder.encode(message)
+            );
+            
+            return {
+                encrypted: Array.from(new Uint8Array(encrypted)),
+                iv: Array.from(iv),
+                salt: Array.from(salt)
+            };
+        }
+
+        async function decryptMessage(encryptedData, password) {
+            try {
+                const encoder = new TextEncoder();
+                const decoder = new TextDecoder();
+                
+                const keyMaterial = await crypto.subtle.importKey(
+                    'raw',
+                    encoder.encode(password),
+                    'PBKDF2',
+                    false,
+                    ['deriveBits', 'deriveKey']
+                );
+                
+                const key = await crypto.subtle.deriveKey(
+                    { 
+                        name: 'PBKDF2', 
+                        salt: new Uint8Array(encryptedData.salt), 
+                        iterations: 100000, 
+                        hash: 'SHA-256' 
+                    },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['decrypt']
+                );
+                
+                const decrypted = await crypto.subtle.decrypt(
+                    { name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) },
+                    key,
+                    new Uint8Array(encryptedData.encrypted)
+                );
+                
+                return decoder.decode(decrypted);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        let encryptedMessage = null;
+        let passwordHash = null;
+
+        async function initializeEncryption() {
+            passwordHash = await hashPassword(PASSWORD);
+            encryptedMessage = await encryptMessage(MESSAGE, PASSWORD);
+        }
+
+        initializeEncryption();
+
+        // ============================================
+        // СНЕЖИНКИ
+        // ============================================
+        function createSnow() {
+            const snowflakes = ['❄', '❅', '❆', '*'];
+            for (let i = 0; i < 50; i++) {
+                const snow = document.createElement('div');
+                snow.className = 'snow';
+                snow.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snow.style.left = Math.random() * 100 + 'vw';
+                snow.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                snow.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                snow.style.animationDelay = Math.random() * 10 + 's';
+                snow.style.opacity = Math.random() * 0.6 + 0.3;
+                document.body.appendChild(snow);
+            }
+        }
+        createSnow();
+
+        // ============================================
+        // ТАЙМЕР
+        // ============================================
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const timerBlock = document.getElementById('timer-block');
+        const passwordBlock = document.getElementById('password-block');
+        const finalBlock = document.getElementById('final-block');
+
+        let isNewYear = false;
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = TARGET_DATE - now;
+
+            if (distance <= 0) {
+                daysEl.textContent = '00';
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+
+                if (!isNewYear) {
+                    isNewYear = true;
+                    showPasswordForm();
+                }
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysEl.textContent = String(days).padStart(2, '0');
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minutesEl.textContent = String(minutes).padStart(2, '0');
+            secondsEl.textContent = String(seconds).padStart(2, '0');
+        }
+
+        function showPasswordForm() {
+            timerBlock.classList.add('hide');
+            passwordBlock.classList.add('active');
+            startMagicParticles();
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+
+        // ============================================
+        // ПРОВЕРКА ПАРОЛЯ
+        // ============================================
+        async function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            const inputHash = await hashPassword(input);
+            
+            if (inputHash === passwordHash) {
+                const decrypted = await decryptMessage(encryptedMessage, input);
+                if (decrypted) {
+                    showFinalMessage(decrypted);
+                }
+            } else {
+                errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function showFinalMessage(message) {
+            passwordBlock.classList.add('hide');
+            finalBlock.classList.add('active');
+            
+            const messageEl = document.getElementById('message-text');
+            let index = 0;
+            
+            function typeWriter() {
+                if (index < message.length) {
+                    messageEl.innerHTML = message.substring(0, index + 1) + '<span class="typing-cursor"></span>';
+                    index++;
+                    setTimeout(typeWriter, 25);
+                } else {
+                    messageEl.innerHTML = message;
+                }
+            }
+            
+            typeWriter();
+            startCelebration();
+        }
+
+        // ============================================
+        // CANVAS АНИМАЦИИ
+        // ============================================
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let particles = [];
+        let stars = [];
+        let animationType = 'magic';
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speed = Math.random() * 0.5 + 0.2;
+                this.opacity = Math.random();
+                this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.opacity += this.twinkleSpeed;
+                
+                if (this.opacity > 1 || this.opacity < 0) {
+                    this.twinkleSpeed = -this.twinkleSpeed;
+                }
+                
+                if (this.y > canvas.height) {
+                    this.y = 0;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = Math.abs(this.opacity);
+                ctx.fillStyle = '#fff';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#fff';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class MagicParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                this.life = 1;
+                this.decay = Math.random() * 0.01 + 0.005;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= this.decay;
+                
+                if (this.life <= 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * canvas.height * 0.5 + 50;
+                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+                this.speed = Math.random() * 3 + 4;
+                this.exploded = false;
+                this.particles = [];
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) {
+                        this.explode();
+                    }
+                } else {
+                    this.particles = this.particles.filter(p => {
+                        p.update();
+                        return p.life > 0;
+                    });
+                }
+            }
+
+            explode() {
+                this.exploded = true;
+                for (let i = 0; i < 60; i++) {
+                    this.particles.push(new FireworkParticle(this.x, this.y, this.color));
+                }
+            }
+
+            draw() {
+                if (!this.exploded) {
+                    ctx.save();
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                } else {
+                    this.particles.forEach(p => p.draw());
+                }
+            }
+        }
+
+        class FireworkParticle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 5 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.life = 1;
+                this.decay = Math.random() * 0.02 + 0.01;
+                this.size = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.1;
+                this.life -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        let fireworks = [];
+
+        function startMagicParticles() {
+            animationType = 'magic';
+            for (let i = 0; i < 100; i++) {
+                stars.push(new Star());
+                particles.push(new MagicParticle());
+            }
+            animate();
+        }
+
+        function startCelebration() {
+            animationType = 'celebration';
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    fireworks.push(new Firework());
+                }, i * 500);
+            }
+            
+            setInterval(() => {
+                if (Math.random() < 0.3) {
+                    fireworks.push(new Firework());
+                }
+            }, 1000);
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(15, 12, 41, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            if (animationType === 'magic') {
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            }
+
+            fireworks = fireworks.filter(f => {
+                f.update();
+                f.draw();
+                return !f.exploded || f.particles.length > 0;
+            });
+
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
